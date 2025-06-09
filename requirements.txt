@@ -1,7 +1,8 @@
-streamlit
-langchain
-langchain-huggingface
-huggingface_hub
-python-docx
-python-dotenv
-https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.7/en_core_web_sm-3.8.7.tar.gz#en_core_web_sm
+streamlit==1.45.1
+langchain==0.3.25
+langchain-huggingface==0.2.0
+huggingface_hub==0.32.4
+python-docx==1.1.2
+python-dotenv==1.1.0
+spacy==3.8.7
+en-core-web-sm==3.8.0
