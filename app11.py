@@ -1,30 +1,37 @@
 import streamlit as st
 import re
 import spacy
+import subprocess
 from langchain import PromptTemplate, LLMChain
 from langchain_huggingface import HuggingFaceEndpoint
 from docx import Document
 from dotenv import load_dotenv
 import os
 
-# Load environment variables
+# Load environment variables (for local development)
 load_dotenv()
+
+# Get API key from environment (works both locally and on Streamlit Cloud)
 HF_API_KEY = os.getenv("HF_API_KEY")
 
 # Verify API key is loaded
 if not HF_API_KEY:
-    st.error("HF_API_KEY not found in .env file. Please set it.")
+    st.error("HF_API_KEY not found. Set it in .env (locally) or Streamlit Secrets (on deployment).")
     st.stop()
 
-# Load SpaCy model for NER
-nlp = spacy.load("en_core_web_sm")
+# Download SpaCy model if not already installed
+try:
+    nlp = spacy.load("en_core_web_sm")
+except OSError:
+    subprocess.run(["python", "-m", "spacy", "download", "en_core_web_sm"])
+    nlp = spacy.load("en_core_web_sm")
 
 # Initialize HuggingFace LLM (Mistral model) using HuggingFaceEndpoint
 llm = HuggingFaceEndpoint(
     endpoint_url="https://api-inference.huggingface.co/models/mistralai/Mixtral-8x7B-Instruct-v0.1",
     huggingfacehub_api_token=HF_API_KEY,
     temperature=0.7,
-    max_new_tokens=500  # Replaced max_length with max_new_tokens
+    max_new_tokens=500
 )
 
 # Define prompt templates for LangChain
@@ -73,7 +80,7 @@ def refine_action_items(action_items, names):
                 if name.lower() in item.lower():
                     assignee = name
                     break
-            refined.append(f"{item}, ")
+            refined.append(f"{item}, Assignee: {assignee}")
     return refined
 
 # Function to create .docx file
@@ -146,10 +153,10 @@ if uploaded_file:
                     mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                 )
 
-# Instructions for running
+# Instructions for running (for local testing)
 st.markdown("""
-### How to Run
-1. Install dependencies: `pip install streamlit spacy langchain langchain-huggingface huggingface_hub python-docx python-dotenv`
+### How to Run Locally
+1. Install dependencies: `pip install -r requirements.txt`
 2. Download SpaCy model: `python -m spacy download en_core_web_sm`
 3. Create a `.env` file with `HF_API_KEY=your_api_token`
 4. Run: `streamlit run meeting_summarizer.py`
