@@ -5,4 +5,5 @@ langchain-huggingface
 huggingface_hub
 python-docx
 python-dotenv
+./spacy_models/blis-0.7.9-cp39-cp39-win_amd64.whl
 ./spacy_models/en_core_web_sm-3.7.1-py3-none-any.whl
