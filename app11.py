@@ -19,8 +19,17 @@ if not HF_API_KEY:
     st.error("HF_API_KEY not found. Set it in .env (locally) or Streamlit Secrets (on deployment).")
     st.stop()
 
-# Download SpaCy model if not already installed
-nlp = spacy.load("en_core_web_sm")
+# Download spaCy model if not already downloaded
+@st.cache_resource
+def load_spacy_model():
+    try:
+        return spacy.load("en_core_web_sm")
+    except:
+        spacy.cli.download("en_core_web_sm")
+        return spacy.load("en_core_web_sm")
+
+nlp = load_spacy_model()
+
 
 # Initialize HuggingFace LLM (Mistral model) using HuggingFaceEndpoint
 llm = HuggingFaceEndpoint(
