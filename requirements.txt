@@ -4,4 +4,4 @@ langchain-huggingface
 huggingface_hub
 python-docx
 python-dotenv
-https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-2.2.5/en_core_web_sm-2.2.5.tar.gz#en_core_web_sm
+https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.7/en_core_web_sm-3.8.7.tar.gz#en_core_web_sm
