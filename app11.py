@@ -20,11 +20,7 @@ if not HF_API_KEY:
     st.stop()
 
 # Download SpaCy model if not already installed
-try:
-    nlp = spacy.load("en_core_web_sm")
-except OSError:
-    subprocess.run(["python", "-m", "spacy", "download", "en_core_web_sm"])
-    nlp = spacy.load("en_core_web_sm")
+nlp = spacy.load("en_core_web_sm")
 
 # Initialize HuggingFace LLM (Mistral model) using HuggingFaceEndpoint
 llm = HuggingFaceEndpoint(
